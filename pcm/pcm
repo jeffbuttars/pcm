@@ -1,0 +1,24 @@
+#!/bin/bash
+
+THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$HOME/pkgs/pcm/pcm/funcs.sh"
+
+if [[ -z $PCM_SYNC_EXPIRE ]]; then
+    export PCM_SYNC_EXPIRE=3600
+fi
+
+if [[ -z $PCM_LAST_SYNC ]]; then
+    export PCM_LAST_SYNC='/tmp/pcm_last_sync'
+fi
+
+echo "$@"
+
+if [[ $# -lt 1 ]]; then
+    echo "No command given"
+    exit 1
+fi
+
+cmd="$1"
+shift
+
+# vim:set ft=sh:
