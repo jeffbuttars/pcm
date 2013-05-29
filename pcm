@@ -1,9 +1,6 @@
 #!/bin/bash
 
 
-set -e
-
-
 # echo ${BASH_SOURCE[0]}
 # echo $(readlink -f ${BASH_SOURCE[0]})
 
@@ -27,6 +24,7 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
+naked_cmd="$1"
 cmd="pcm_$1"
 shift
 
@@ -35,6 +33,13 @@ if [[ "$cmd" == "pcm_sync" ]]; then
 fi
 
 # echo "$cmd $@"
+res=$(type $cmd 2>&1)
+c_exists=$?
+if [[ "$c_exists" == "1" ]]; then
+    pacman $naked_cmd $@
+    exit
+fi
+
 $cmd $@
 
 # vim:set ft=sh:
