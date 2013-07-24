@@ -9,7 +9,6 @@ source "$THIS_DIR/funcs.sh"
 
 
 if [[ -z $PCM_SYNC_EXPIRE ]]; then
-    # export PCM_SYNC_EXPIRE=1440
     export PCM_SYNC_EXPIRE=60
 fi
 

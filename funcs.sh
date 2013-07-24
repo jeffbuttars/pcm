@@ -16,6 +16,11 @@ pcm_update()
     pacman -Su $@ 
 } #pcm_update
 
+pcm_up()
+{
+    pcm_update $@
+} #pcm_up
+
 pcm_sync()
 {
     pacman -Sy $@
@@ -68,5 +73,20 @@ pcm_install()
     echo "pcm_install $@"
 
     pcm_sync_expire
-    pacman -Su $@ 
+    pacman -Sy $@ 
 } #pcm_install
+
+pcm_in()
+{
+    pcm_install $@
+} #pcm_in
+
+pcm_remove()
+{
+    pacman --remove $@
+} #pcm_remove
+
+pcm_uninstall()
+{
+    pcm_remove $@
+} #pcm_uninstall
