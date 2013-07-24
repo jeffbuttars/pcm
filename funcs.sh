@@ -26,6 +26,11 @@ pcm_sync()
     pacman -Sy $@
 } #pcm_sync
 
+pcm_makecache()
+{
+    pcm_sync $@
+} #pcm_makecache
+
 pcm_sync_expire()
 {
     now=$(date +%s)
