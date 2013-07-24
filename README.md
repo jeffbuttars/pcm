@@ -78,3 +78,18 @@ Get information about a package or packge group
 
     > pcm info pkgname
     > pcm info pkggroup
+
+
+### Fall through
+
+If you you give pcm a command that is not specific to pcm, then pcm will pass
+that command and all arguments straight to pacman. In this case, pcm behaves
+much like an alias to pacman.
+
+For instance:
+
+    > pcm -Su
+
+is equivelant to
+
+    > pacman -Su
