@@ -14,6 +14,7 @@ command into your `~/bin/`. For example:
     > mkdir -p pkgs
     > cd pkgs
     > git clone https://github.com/jeffbuttars/pcm.git pcm
+    > cd
     > mkdir -p ~/bin
     > ln -s $HOME/pkgs/pcm/pcm $HOME/bin/
 
