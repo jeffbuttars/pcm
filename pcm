@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-# echo ${BASH_SOURCE[0]}
-# echo $(readlink -f ${BASH_SOURCE[0]})
-
 THIS_DIR="$( cd "$(dirname $(readlink -f ${BASH_SOURCE[0]}) )" && pwd)"
 source "$THIS_DIR/funcs.sh"
 
@@ -27,9 +23,9 @@ naked_cmd="$1"
 cmd="pcm_$1"
 shift
 
-if [[ "$cmd" == "pcm_sync" ]]; then
-    cmd="pcm_sync_expire"
-fi
+# if [[ "$cmd" == "pcm_sync" ]]; then
+#     cmd="pcm_sync_expire"
+# fi
 
 # echo "$cmd $@"
 res=$(type $cmd 2>&1)

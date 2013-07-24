@@ -1,3 +1,4 @@
+
 pcm_search()
 {
     pcm_sync_expire
@@ -7,7 +8,13 @@ pcm_search()
 pcm_provides()
 {
     pcm_sync_expire
-    pkgfile -gsv $@
+    res=$(pkgfile -gsv $@)
+    if [[ "$res" == "" ]]; then
+        echo "no match found for '$@'"
+        exit 1
+    fi
+
+    echo "$res"
 }
 
 pcm_update()
@@ -23,7 +30,9 @@ pcm_up()
 
 pcm_sync()
 {
+    echo "pcm_sync $@"
     pacman -Sy $@
+    pkgfile --update
 } #pcm_sync
 
 pcm_makecache()
@@ -70,7 +79,7 @@ pcm_sync_expire()
     fi
     
     next_sync=$(date -d "+$(echo $PCM_SYNC_EXPIRE - $delta | bc) min")
-    echo "Last sync was at $(date --date="@$aged_date"), not syncing until $next_sync"
+    # echo "Last sync was at $(date --date="@$aged_date"), not syncing until $next_sync"
 } #pcm_sync_expire
 
 pcm_install()
