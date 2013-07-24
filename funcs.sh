@@ -90,3 +90,9 @@ pcm_uninstall()
 {
     pcm_remove $@
 } #pcm_uninstall
+
+pcm_info()
+{
+    pcm_sync_expire
+    pacman  -Qi $@
+} #pcm_info
