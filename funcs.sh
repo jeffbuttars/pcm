@@ -54,10 +54,10 @@ pcm_sync_expire()
 
     last_sync=$(date -d "-$PCM_SYNC_EXPIRE min")
 
-    echo "now $now"
-    echo "aged_date $aged_date"
-    echo "delta $delta"
-    echo "max age $PCM_SYNC_EXPIRE"
+    # echo "now $now"
+    # echo "aged_date $aged_date"
+    # echo "delta $delta"
+    # echo "max age $PCM_SYNC_EXPIRE"
     if [[ "$delta" -gt "$PCM_SYNC_EXPIRE" ]]; then
         echo "Last sync was at $(date --date="@$($aged_date)"), re-syncing..."
         echo $now > "$PCM_LAST_SYNC"
@@ -70,10 +70,10 @@ pcm_sync_expire()
 
 pcm_install()
 {
-    echo "pcm_install $@"
+    # echo "pcm_install $@"
 
     pcm_sync_expire
-    pacman -Sy $@ 
+    pacman -S $@ 
 } #pcm_install
 
 pcm_in()
