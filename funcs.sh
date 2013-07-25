@@ -1,3 +1,4 @@
+
 pcm_search()
 {
     pcm_sync_expire
@@ -7,7 +8,13 @@ pcm_search()
 pcm_provides()
 {
     pcm_sync_expire
-    pkgfile -gsv $@
+    res=$(pkgfile -gsv $@)
+    if [[ "$res" == "" ]]; then
+        echo "no match found for '$@'"
+        exit 1
+    fi
+
+    echo "$res"
 }
 
 pcm_update()
@@ -16,10 +23,22 @@ pcm_update()
     pacman -Su $@ 
 } #pcm_update
 
+pcm_up()
+{
+    pcm_update $@
+} #pcm_up
+
 pcm_sync()
 {
+    echo "pcm_sync $@"
     pacman -Sy $@
+    pkgfile --update
 } #pcm_sync
+
+pcm_makecache()
+{
+    pcm_sync $@
+} #pcm_makecache
 
 pcm_sync_expire()
 {
@@ -49,10 +68,10 @@ pcm_sync_expire()
 
     last_sync=$(date -d "-$PCM_SYNC_EXPIRE min")
 
-    echo "now $now"
-    echo "aged_date $aged_date"
-    echo "delta $delta"
-    echo "max age $PCM_SYNC_EXPIRE"
+    # echo "now $now"
+    # echo "aged_date $aged_date"
+    # echo "delta $delta"
+    # echo "max age $PCM_SYNC_EXPIRE"
     if [[ "$delta" -gt "$PCM_SYNC_EXPIRE" ]]; then
         echo "Last sync was at $(date --date="@$($aged_date)"), re-syncing..."
         echo $now > "$PCM_LAST_SYNC"
@@ -60,20 +79,34 @@ pcm_sync_expire()
     fi
     
     next_sync=$(date -d "+$(echo $PCM_SYNC_EXPIRE - $delta | bc) min")
-    echo "Last sync was at $(date --date="@$aged_date"), not syncing until $next_sync"
+    # echo "Last sync was at $(date --date="@$aged_date"), not syncing until $next_sync"
 } #pcm_sync_expire
 
 pcm_install()
 {
-    echo "pcm_install $@"
+    # echo "pcm_install $@"
 
     pcm_sync_expire
     pacman -S $@ 
 } #pcm_install
 
+pcm_in()
+{
+    pcm_install $@
+} #pcm_in
+
 pcm_remove()
 {
-    echo "pcm_remove $@"
-    pcm_sync_expire
-    pacman -Rs $@
+    pacman --remove $@
 } #pcm_remove
+
+pcm_uninstall()
+{
+    pcm_remove $@
+} #pcm_uninstall
+
+pcm_info()
+{
+    pcm_sync_expire
+    pacman  -Qi $@
+} #pcm_info
