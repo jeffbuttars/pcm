@@ -40,7 +40,7 @@ pcm_sync_expire()
     if [[ ! -f "$PCM_LAST_SYNC" ]]; then
         echo "No last sync found, syncing."
         echo $now > "$PCM_LAST_SYNC"
-        echo $(pcm_sync $@)
+        pcm_sync $@
     fi
 
     # aged_date=$(date --date="@$(cat $PCM_LAST_SYNC)")
@@ -68,5 +68,12 @@ pcm_install()
     echo "pcm_install $@"
 
     pcm_sync_expire
-    pacman -Su $@ 
+    pacman -S $@ 
 } #pcm_install
+
+pcm_remove()
+{
+    echo "pcm_remove $@"
+    pcm_sync_expire
+    pacman -Rs $@
+} #pcm_remove
