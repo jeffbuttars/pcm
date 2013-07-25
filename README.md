@@ -93,3 +93,11 @@ For instance:
 is equivelant to
 
     > pacman -Su
+
+
+# TODO
+
+* Build an AUR
+* Support AUR management.
+
+
