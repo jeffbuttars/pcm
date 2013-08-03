@@ -76,7 +76,7 @@ pcm_sync_expire()
     echo "delta $delta"
     echo "max age $PCM_SYNC_EXPIRE"
     if [[ "$delta" -gt "$PCM_SYNC_EXPIRE" ]]; then
-        echo "Last sync was at $(date --date="@$($aged_date)"), re-syncing..."
+        echo "Last sync was at $(date --date="@${aged_date}"), re-syncing..."
         echo $now > "$PCM_LAST_SYNC"
         echo $(pcm_sync $@)
     fi
