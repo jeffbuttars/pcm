@@ -3,6 +3,11 @@ pcm_search()
 {
     pcm_sync_expire
     pacman -Ss $@    
+    res=$?
+    if [[ "$res" == "1" ]]; then
+        echo "Trying yaourt"
+        yaourt $@
+    fi
 } #pcm_search
 
 pcm_provides()
