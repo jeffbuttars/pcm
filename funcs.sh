@@ -5,6 +5,11 @@ pcm_search()
     pacman -Ss $@    
 } #pcm_search
 
+pcm_flist()
+{
+    pacman -Ql $@
+}
+
 pcm_provides()
 {
     pcm_sync_expire
