@@ -10,6 +10,11 @@ pcm_search()
     fi
 } #pcm_search
 
+pcm_flist()
+{
+    pacman -Ql $@
+}
+
 pcm_provides()
 {
     pcm_sync_expire
@@ -69,14 +74,17 @@ pcm_sync_expire()
 
     # aged_date=$(date --date="@$(cat $PCM_LAST_SYNC)")
     aged_date=$(cat $PCM_LAST_SYNC)
+    echo "aged_date: $aged_date"
     delta=$(echo "($now - $aged_date) / 60" | bc)
+    echo "delta: $delta"
 
     last_sync=$(date -d "-$PCM_SYNC_EXPIRE min")
+    echo "last_sync: $last_sync"
 
-    # echo "now $now"
-    # echo "aged_date $aged_date"
-    # echo "delta $delta"
-    # echo "max age $PCM_SYNC_EXPIRE"
+    echo "now $now"
+    echo "aged_date $aged_date"
+    echo "delta $delta"
+    echo "max age $PCM_SYNC_EXPIRE"
     if [[ "$delta" -gt "$PCM_SYNC_EXPIRE" ]]; then
         echo "Last sync was at $(date --date="@${aged_date}"), re-syncing..."
         echo $now > "$PCM_LAST_SYNC"
