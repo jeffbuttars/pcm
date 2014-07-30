@@ -29,8 +29,13 @@ pcm_provides()
 
 pcm_update()
 {
-    pcm_sync_expire
-    pacman -Su $@ 
+
+    if [ -x /usr/bin/yaourt ]; then
+        yaourt --color --noconfirm -Sua
+    else
+        pcm_sync_expire
+        pacman --color -Su $@ 
+    fi
 } #pcm_update
 
 pcm_up()
@@ -41,13 +46,18 @@ pcm_up()
 pcm_sync()
 {
     echo "pcm_sync $@"
-    pacman -Sy $@
+
+    if [ -x /usr/bin/yaourt ]; then
+        yaourt --color -Sya
+    else
+        pacman --color -Sy $@
+    fi
     pkgfile --update
 } #pcm_sync
 
 pcm_makecache()
 {
-    pcm_sync $@
+    pcm_sync --color $@
 } #pcm_makecache
 
 pcm_sync_expire()
