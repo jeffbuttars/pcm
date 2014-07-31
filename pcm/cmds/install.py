@@ -51,14 +51,14 @@ class Cmd(BaseCmd):
         """
 
         logger.debug("pkgs %s", args.pkgs)
-        installer = InstallCmd(args.pkgs)
+        installer = InstallCmd(*args.pkgs)
         installer.execute()
     #exec()
 # Cmd
 
 
 class InstallCmd(PacmanCmd):
-    pacman_args = '--color -S'
+    pacman_args = ('-S',)
 
     def __init__(self, *pkgs):
         """todo: to be defined
