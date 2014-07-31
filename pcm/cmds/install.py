@@ -1,7 +1,8 @@
 import logging
 logger = logging.getLogger('pcm')
 
-from upkg.cmds.base import BaseCmd
+from pcm.cmds.base import BaseCmd
+from pcm.lib.cmd import PkgrExec
 
 
 class Cmd(BaseCmd):
@@ -51,6 +52,20 @@ class Cmd(BaseCmd):
 
         logger.debug("pkgs %s", args.pkgs)
         location = args.location and os.path.abspath(args.pkgs)
-        self.install_pkgs(pkgs)
+        installer = InstallCmd(args.pkgs)
     #exec()
 # Cmd
+
+
+class InstallCmd(Cmd):
+    pacman_args - '-S'
+
+    def __init__(self, *pkgs):
+        """todo: to be defined
+        
+        :param *pkgs: arg description
+        :type *pkgs: type description
+        """
+        super(InstallCmd, self).__init__(*pkgs)
+    # __init__()
+# InstallCmd

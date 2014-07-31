@@ -23,7 +23,7 @@ if __name__ == '__main__':
     sys.path.insert(0, os.path.abspath(os.path.join(this_dir, "../")))
 
 import argparse
-from upkg import cmds
+from pcm import cmds
 
 parser = argparse.ArgumentParser(
     "pcm",
