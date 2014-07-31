@@ -19,9 +19,6 @@ def build_cmds(sub_parser):
     imlist = [os.path.basename(x) for x in imlist]
     imlist = [os.path.splitext(x)[0] for x in imlist]
 
-    # s = importlib.import_module('cmds.search')
-    # print(s.Cmd.name)
-
     for im in imlist:
         # print(im)
         mod = importlib.import_module("pcm." + _this_mod + '.' + im)

@@ -14,13 +14,15 @@ from pprint import pformat as pf
 
 from blessings import Terminal
 
+from pcm.lib.exceptions import NoPacmanFound
+
 PKGRS = {}
 import sh
 try:
-    from sh import pacmans
+    from sh import pacman
     PKGRS['pacman'] = pacman
-except:
-    raise
+except ImportError:
+    raise NoPacmanFound()
 
 # from sh import yaourt
 # PKGRS['yaourt'] = yaourt

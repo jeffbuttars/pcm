@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger('pcm')
 # Use a console handler, set it to debug by default
 logger_ch = logging.StreamHandler()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 log_formatter = logging.Formatter(
     ('%(levelname)s: %(asctime)s %(processName)s:%(process)d'
      ' %(filename)s:%(lineno)s %(module)s::%(funcName)s()'
@@ -49,14 +49,12 @@ def main():
     args = parser.parse_args()
     if args.debug:
         logger.setLevel(logging.DEBUG)
-        cmd_logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.DEBUG)
 
     logger.debug("args: %s", args)
-
     # import conf
     # conf.load_settings(args.config)
-
-    logger.debug("settings: %s", conf.settings)
+    # logger.debug("settings: %s", conf.settings)
 
     if hasattr(args, 'func'):
         return args.func(args)
