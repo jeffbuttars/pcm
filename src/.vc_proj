@@ -1,0 +1,2 @@
+VC_PYTHON_EXE=python3
+VC_VIRTUALENV_EXE=virtualenv3
