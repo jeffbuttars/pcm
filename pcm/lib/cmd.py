@@ -42,7 +42,6 @@ class Cmd(object):
         """
         self._cmd = command
         self._args = args
-        self.cmd = command
     # __init__()
 
     def _build_writer(self, output, color=None, prefix=""):
@@ -50,12 +49,12 @@ class Cmd(object):
 
             def _cwriter(line):
                 go = getattr(self.term, color)
-                output(go(self.name + ": " + prefix + line))
+                output(go(prefix + line))
 
             return _cwriter
 
         def _writer(line):
-            output(self.name + ": " + prefix + line)
+            output(prefix + line)
 
         return _writer
     #_build_writer()
@@ -84,10 +83,17 @@ class Cmd(object):
         print(self.term.red(fmt.format(*args, **kwargs)))
     #pr_atten()
 
+    @property
+    def cmd(self):
+        return self._cmd
+
     def execute(self):
-        p = self.cmd(args,
-               _out=self._sh_stdout('blue'),
-               _err=self._sh_stderr('red'))
+        p = self._cmd(*self._args,
+               _out=self._sh_stdout(),
+               _err=self._sh_stderr())
+        # p = self.cmd(args,
+        #        _out=self._sh_stdout('blue'),
+        #        _err=self._sh_stderr('red'))
         p.wait()
     # execute()
 # Cmd
@@ -104,10 +110,8 @@ class PacmanCmd(Cmd):
         :param args: arg description
         :type args: type description
         """
-        self._pkgr_str = pkgr
-        self._pkgr = PKGRS[pkgr]
-
-        args = ['-S'] + args
+        self._pkgs = args[:]
+        args = ('-S',) + args
 
         super(PacmanCmd, self).__init__(*args, command=pacman)
     # __init__()
