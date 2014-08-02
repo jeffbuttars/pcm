@@ -1,33 +1,19 @@
 import logging
 logger = logging.getLogger('pcm')
 
-import os
 import sys
 import subprocess
 # try:
 #     from StringIO import StringIO
 # except ImportError:
 #     from io import StringIO
-import shutil
-from urllib.parse import urlparse
-from pprint import pformat as pf
 
 from blessings import Terminal
 
 from pcm.lib.exceptions import NoPacmanFound
 
-PKGRS = {}
-import sh
-try:
-    from sh import pacman
-    PKGRS['pacman'] = pacman
-except ImportError:
-    raise NoPacmanFound()
-
-# from sh import yaourt
-# PKGRS['yaourt'] = yaourt
-
 sh.logging_enabled = True
+
 
 class Cmd(object):
     """Docstring for PkgrExec """
@@ -72,31 +58,31 @@ class Cmd(object):
             output.flush()
 
         return _writer
-    #_build_writer()
+    # _build_writer()
 
     def _sh_stdout(self, *args, **kwargs):
         return self._build_writer(sys.stdout, *args, **kwargs)
-    #_sh_stdout()
+    # _sh_stdout()
 
     def _sh_stderr(self, *args, **kwargs):
         return self._build_writer(sys.stderr, *args, **kwargs)
-    #_sh_stderr()
+    # _sh_stderr()
 
     def pr_pass(self, fmt, *args, **kwargs):
         print(self.term.green(fmt.format(*args, **kwargs)))
-    #pr_pass()
+    # pr_pass()
 
     def pr_info(self, fmt, *args, **kwargs):
         print(self.term.blue(fmt.format(*args, **kwargs)))
-    #pr_info()
+    # pr_info()
 
     def pr_fail(self, fmt, *args, **kwargs):
         print(self.term.red(fmt.format(*args, **kwargs)))
-    #pr_fail()
+    # pr_fail()
 
     def pr_atten(self, fmt, *args, **kwargs):
         print(self.term.red(fmt.format(*args, **kwargs)))
-    #pr_atten()
+    # pr_atten()
 
     @property
     def cmd(self):
@@ -106,21 +92,11 @@ class Cmd(object):
     def execute(self):
         logger.debug("%s %s", self._cmd, self._args)
         try:
-            p = self._cmd(
-                *self._args,
-                _in=sys.stdin,
-                _out=self._sh_stdout(),
-                # _err=self._sh_stderr('red'),
-                _err_to_out=True,
-                _out_bufsize=0,
-                _in_bufsize=0
-                # _tty_out=False,
-                # _tty_in=True
+            subprocess.check_call(
+                (self._cmd,) + self._args,
             )
-            # print(dir(p))
-            p.wait()
-        except sh.ErrorReturnCode_1 as e:
-            self.pr_fail("command '{} {}' failed", self._cmd, " ".join(self._args))
+        except subprocess.CalledProcessError as e:
+            sys.exit(e.returncode)
     # execute()
 # Cmd
 
@@ -139,6 +115,6 @@ class PacmanCmd(Cmd):
         """
         self._pkgs = args[:]
         args = self.pacman_args + args
-        super(PacmanCmd, self).__init__(*args, command=pacman)
+        super(PacmanCmd, self).__init__(*args, command='pacman')
     # __init__()
 # PacmanCmd
