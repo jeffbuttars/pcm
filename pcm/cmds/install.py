@@ -27,19 +27,7 @@ class Cmd(BaseCmd):
         )
 
         return super(Cmd, self).build()
-    #build()
-
-    def install_pkgs(self, pkgs):
-        """todo: Docstring for install_pkgs
-        
-        :param pkgs: arg description
-        :type pkgs: type description
-        :return:
-        :rtype:
-        """
-    
-        pass
-    # install_pkgs()
+    # build()
 
     def exec(self, args):
         """todo: Docstring for exec
@@ -53,7 +41,7 @@ class Cmd(BaseCmd):
         logger.debug("pkgs %s", args.pkgs)
         installer = InstallCmd(*args.pkgs)
         installer.execute()
-    #exec()
+    # exec()
 # Cmd
 
 

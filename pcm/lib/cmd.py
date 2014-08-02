@@ -10,9 +10,7 @@ import subprocess
 
 from blessings import Terminal
 
-from pcm.lib.exceptions import NoPacmanFound
-
-sh.logging_enabled = True
+# from pcm.lib.exceptions import NoPacmanFound
 
 
 class Cmd(object):

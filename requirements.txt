@@ -1,2 +1,7 @@
+argparse==1.2.1
 blessings==1.5.1
+dateutils==0.6.6
+python-dateutil==2.2
+pytz==2014.4
 sh==1.09
+six==1.7.3
