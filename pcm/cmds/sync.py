@@ -13,6 +13,7 @@ class Cmd(BaseCmd):
 
     name = 'sync'
     help_text = ("Sync the repos")
+    aliases = ('makecache',)
 
     def build(self):
         """todo: Docstring for build
@@ -99,4 +100,13 @@ class SyncCmd(PacmanCmd):
             with open(self.sync_time_file, 'w') as fd:
                 fd.write(datetime.datetime.now().isoformat())
     # execute()
-# InstallCmd
+# SyncCmd
+
+
+class SyncFirst(PacmanCmd):
+    def execute(self):
+        sync = SyncCmd(if_expired=True)
+        sync.execute()
+        super(SyncFirst, self).execute()
+    # execute()
+# SyncFirst

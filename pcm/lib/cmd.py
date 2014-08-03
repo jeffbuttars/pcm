@@ -16,6 +16,8 @@ from blessings import Terminal
 class Cmd(object):
     """Docstring for PkgrExec """
 
+    command = ''
+
     def __init__(self, *args, command=None):
         """todo: to be defined
 
@@ -24,7 +26,7 @@ class Cmd(object):
         :param args: arg description
         :type args: type description
         """
-        self._cmd = command
+        self.command = command
         self._args = args
 
         self.term = Terminal()
@@ -83,15 +85,15 @@ class Cmd(object):
     # pr_atten()
 
     @property
-    def cmd(self):
-        return self._cmd
+    def command(self):
+        return self.command
     # cmd()
 
     def execute(self):
-        logger.debug("%s %s", self._cmd, self._args)
+        logger.debug("%s %s", self.command, self._args)
         try:
             subprocess.check_call(
-                (self._cmd,) + self._args,
+                (self.command,) + self._args,
             )
         except subprocess.CalledProcessError as e:
             sys.exit(e.returncode)
@@ -102,6 +104,7 @@ class Cmd(object):
 class PacmanCmd(Cmd):
     """Docstring for PkgrCmd """
     pacman_args = ()
+    command = 'pacman'
 
     def __init__(self, *args):
         """todo: to be defined
@@ -113,6 +116,7 @@ class PacmanCmd(Cmd):
         """
         self._pkgs = args[:]
         args = self.pacman_args + args
-        super(PacmanCmd, self).__init__(*args, command='pacman')
+        super(PacmanCmd, self).__init__(*args)
     # __init__()
 # PacmanCmd
+

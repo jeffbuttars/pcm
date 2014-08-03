@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger('pcm')
 
 from pcm.cmds.base import BaseCmd
-from pcm.lib.cmd import PacmanCmd
+from pcm.cmds.sync import SyncFirst
 
 
 class Cmd(BaseCmd):
@@ -45,15 +45,6 @@ class Cmd(BaseCmd):
 # Cmd
 
 
-class InstallCmd(PacmanCmd):
+class InstallCmd(SyncFirst):
     pacman_args = ('-S',)
-
-    def __init__(self, *pkgs):
-        """todo: to be defined
-
-        :param *pkgs: arg description
-        :type *pkgs: type description
-        """
-        super(InstallCmd, self).__init__(*pkgs)
-    # __init__()
 # InstallCmd

@@ -2,15 +2,14 @@ import logging
 logger = logging.getLogger('pcm')
 
 from pcm.cmds.base import BaseCmd
-from pcm.cmds.sync import SyncFirst
+from pcm.lib.cmd import Cmd
 
 
 class Cmd(BaseCmd):
     """Docstring for Cmd """
 
-    name = 'update'
-    help_text = ("update pkgname [pkgnames...]")
-    aliases = ('up',)
+    name = 'provides'
+    help_text = ("provides <path_expresssion>")
 
     def build(self):
         """todo: Docstring for build
@@ -19,10 +18,10 @@ class Cmd(BaseCmd):
         """
 
         self._cmd_parser.add_argument(
-            'pkgs',
+            'path',
             type=str,
             default=None,
-            nargs="*",
+            nargs="+",
             help=(""),
         )
 
@@ -39,12 +38,12 @@ class Cmd(BaseCmd):
         """
 
         logger.debug("pkgs %s", args.pkgs)
-        update = UpdateCmd(*args.pkgs)
-        update.execute()
+        provides = ProvidesCmd(args.path)
+        provides.execute()
     # exec()
 # Cmd
 
 
-class UpdateCmd(SyncFirst):
-    pacman_args = ('-Su',)
-# UpdateCmd
+class ProvidesCmd(Cmd):
+    command = 'pkgfile -gsv'
+# InstallCmd
