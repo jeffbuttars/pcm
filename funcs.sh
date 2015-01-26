@@ -1,8 +1,10 @@
 
+PMAN='sudo -E pacman'
+
 pcm_search()
 {
     pcm_sync_expire
-    pacman -Ss $@    
+    $PMAN -Ss $@    
     res=$?
     if [[ "$res" == "1" ]]; then
         echo "Trying yaourt"
@@ -12,7 +14,7 @@ pcm_search()
 
 pcm_flist()
 {
-    pacman -Ql $@
+    $PMAN -Ql $@
 }
 
 pcm_provides()
@@ -29,12 +31,11 @@ pcm_provides()
 
 pcm_update()
 {
+    pcm_sync_expire
+    $PMAN -Su $@
 
     if [ -x /usr/bin/yaourt ]; then
-        yaourt --color --noconfirm -Sua
-    else
-        pcm_sync_expire
-        pacman --color -Su $@ 
+        yaourt --noconfirm -Sua
     fi
 } #pcm_update
 
@@ -46,18 +47,13 @@ pcm_up()
 pcm_sync()
 {
     echo "pcm_sync $@"
-
-    if [ -x /usr/bin/yaourt ]; then
-        yaourt --color -Sya
-    else
-        pacman --color -Sy $@
-    fi
-    pkgfile --update
+    $PMAN -Sy $@
+    sudo -E pkgfile --update
 } #pcm_sync
 
 pcm_makecache()
 {
-    pcm_sync --color $@
+    pcm_sync $@
 } #pcm_makecache
 
 pcm_sync_expire()
@@ -68,6 +64,7 @@ pcm_sync_expire()
         echo "No expire time set"
         echo $now > "$PCM_LAST_SYNC"
         echo $(pcm_sync $@)
+        PCM_SYNC_EXPIRE=1440
     fi
 
     if [[ $PCM_SYNC_EXPIRE -eq 0 ]]; then
@@ -110,7 +107,12 @@ pcm_install()
     # echo "pcm_install $@"
 
     pcm_sync_expire
-    pacman -S $@ 
+    $PMAN -S $@ 
+    res=$?
+    if [[ "$res" == "1" ]]; then
+        echo "Trying yaourt"
+        yaourt $@
+    fi
 } #pcm_install
 
 pcm_in()
@@ -120,7 +122,7 @@ pcm_in()
 
 pcm_remove()
 {
-    pacman --remove $@
+    $PMAN --remove $@
 } #pcm_remove
 
 pcm_uninstall()
@@ -131,5 +133,5 @@ pcm_uninstall()
 pcm_info()
 {
     pcm_sync_expire
-    pacman  -Qi $@
+    $PMAN  -Qi $@
 } #pcm_info
