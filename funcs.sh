@@ -1,20 +1,36 @@
 
 PMAN='sudo -E pacman'
 
+_out=$(which pacmatic)
+if [[ "$?" == "0" ]]; then
+    PMAN='sudo -E pacmatic'
+fi
+
+
 pcm_search()
 {
     pcm_sync_expire
-    $PMAN -Ss $@    
+    $PMAN -Ss $@
     res=$?
     if [[ "$res" == "1" ]]; then
         echo "Trying yaourt"
         yaourt $@
     fi
-} #pcm_search
+}
 
 pcm_flist()
 {
     $PMAN -Ql $@
+}
+
+pcm_listpkgs()
+{
+    $PMAN -Qqe
+}
+
+pcm_clean()
+{
+    $PMAN -Rns $($PMAN -Qtdq)
 }
 
 pcm_provides()
@@ -37,24 +53,24 @@ pcm_update()
     if [ -x /usr/bin/yaourt ]; then
         yaourt --noconfirm -Sua
     fi
-} #pcm_update
+}
 
 pcm_up()
 {
     pcm_update $@
-} #pcm_up
+}
 
 pcm_sync()
 {
     echo "pcm_sync $@"
     $PMAN -Sy $@
     sudo -E pkgfile --update
-} #pcm_sync
+}
 
 pcm_makecache()
 {
     pcm_sync $@
-} #pcm_makecache
+}
 
 pcm_sync_expire()
 {
@@ -97,10 +113,10 @@ pcm_sync_expire()
         echo $now > "$PCM_LAST_SYNC"
         echo $(pcm_sync $@)
     fi
-    
+
     next_sync=$(date -d "+$(echo $PCM_SYNC_EXPIRE - $delta | bc) min")
     # echo "Last sync was at $(date --date="@$aged_date"), not syncing until $next_sync"
-} #pcm_sync_expire
+}
 
 pcm_install()
 {
@@ -113,25 +129,44 @@ pcm_install()
         echo "Trying yaourt"
         yaourt $@
     fi
-} #pcm_install
+}
 
 pcm_in()
 {
     pcm_install $@
-} #pcm_in
+}
+
+pcm_i()
+{
+    pcm_install $@
+}
 
 pcm_remove()
 {
     $PMAN --remove $@
-} #pcm_remove
+}
+
+pcm_rem()
+{
+    $PMAN --remove $@
+}
 
 pcm_uninstall()
 {
     pcm_remove $@
-} #pcm_uninstall
+}
 
 pcm_info()
 {
     pcm_sync_expire
     $PMAN  -Qi $@
-} #pcm_info
+}
+
+pcm_lostfiles()
+{
+    if [[ -n $@ ]]; then
+        lostfiles $@
+    else
+        lostfiles relaxed
+    fi
+}
