@@ -1,10 +1,10 @@
 
 PMAN='sudo -E pacman'
 
-_out=$(which pacmatic)
-if [[ "$?" == "0" ]]; then
-    PMAN='sudo -E pacmatic'
-fi
+# _out=$(which pacmatic)
+# if [[ "$?" == "0" ]]; then
+#     PMAN='sudo -E pacmatic'
+# fi
 
 
 pcm_search()
@@ -14,7 +14,7 @@ pcm_search()
     res=$?
     if [[ "$res" == "1" ]]; then
         echo "Trying yaourt"
-        yaourt $@
+        yaourt --noconfirm -Ss $@
     fi
 }
 
@@ -25,7 +25,17 @@ pcm_flist()
 
 pcm_listpkgs()
 {
-    $PMAN -Qqe
+    $PMAN -Qq
+}
+
+pcm_listnativepkgs()
+{
+    $PMAN -Qnq
+}
+
+pcm_listaurpkgs()
+{
+    $PMAN -Qmq
 }
 
 pcm_clean()
@@ -123,11 +133,11 @@ pcm_install()
     # echo "pcm_install $@"
 
     pcm_sync_expire
-    $PMAN -S $@ 
+    $PMAN -S $@
     res=$?
     if [[ "$res" == "1" ]]; then
         echo "Trying yaourt"
-        yaourt $@
+        yaourt --noconfirm $@
     fi
 }
 
