@@ -1,5 +1,12 @@
 
-PMAN='sudo -E pacman'
+BASE_PMAN='pacman'
+AUR_INST='/usr/bin/yay'
+
+# if [[ -x '/bin/powerpill' ]]; then
+#     BASE_PMAN='/bin/powerpill'
+# fi
+
+PMAN="sudo -E $BASE_PMAN"
 
 # _out=$(which pacmatic)
 # if [[ "$?" == "0" ]]; then
@@ -13,8 +20,8 @@ pcm_search()
     $PMAN -Ss $@
     res=$?
     if [[ "$res" == "1" ]]; then
-        echo "Trying yaourt"
-        yaourt --noconfirm -Ss $@
+        echo "Trying $AUR_INST"
+        $AUR_INST --noconfirm -Ss $@
     fi
 }
 
@@ -60,8 +67,8 @@ pcm_update()
     pcm_sync_expire
     $PMAN -Su $@
 
-    if [ -x /usr/bin/yaourt ]; then
-        yaourt --noconfirm -Sua
+    if [ -x $AUR_INST ]; then
+        $AUR_INST --noconfirm -Sua
     fi
 }
 
@@ -136,8 +143,8 @@ pcm_install()
     $PMAN -S $@
     res=$?
     if [[ "$res" == "1" ]]; then
-        echo "Trying yaourt"
-        yaourt --noconfirm $@
+        echo "Trying $(basename $AUR_INST)"
+        $AUR_INST --noconfirm $@
     fi
 }
 

@@ -1,6 +1,11 @@
 #!/bin/bash
 
-PMAN='sudo -E pacman'
+BASE_PMAN='pacman'
+# if [[ -x '/bin/powerpill' ]]; then
+#     BASE_PMAN='/bin/powerpill'
+# fi
+
+PMAN="sudo -E $BASE_PMAN"
 
 THIS_DIR="$( cd "$(dirname $(readlink -f ${BASH_SOURCE[0]}) )" && pwd)"
 source "$THIS_DIR/funcs.sh"
